@@ -20,27 +20,30 @@
 const BOT_TOKEN = "ВСТАВЬТЕ_ТОКЕН_БОТА";   // ← сюда токен
 const CHAT_ID   = "ВСТАВЬТЕ_CHAT_ID";       // ← сюда chat id
 
-/* ===== Каталог марок и моделей мототехники ===== */
-const BIKE_DATA = {
-  "Honda": ["CB400", "CBR600RR", "CBR1000RR", "CRF250L", "Africa Twin", "Rebel 500", "X-ADV", "Forza 350"],
-  "Yamaha": ["YZF-R1", "YZF-R6", "MT-07", "MT-09", "Tenere 700", "XSR700", "FZ6", "NMAX 155"],
-  "Suzuki": ["GSX-R600", "GSX-R750", "GSX-R1000", "SV650", "V-Strom 650", "Boulevard M109R", "Burgman 400"],
-  "Kawasaki": ["Ninja 400", "Ninja ZX-6R", "Ninja ZX-10R", "Z650", "Z900", "Versys 650", "Vulcan S"],
-  "BMW": ["S1000RR", "R1250GS", "F850GS", "F900R", "R nineT", "G310R", "C400X"],
-  "Ducati": ["Panigale V2", "Panigale V4", "Monster", "Multistrada", "Scrambler", "Diavel"],
-  "KTM": ["Duke 390", "Duke 790", "Duke 890", "RC 390", "1290 Super Adventure", "390 Adventure"],
-  "Harley-Davidson": ["Sportster", "Iron 883", "Street Bob", "Fat Boy", "Road King", "Forty-Eight"],
-  "Triumph": ["Street Triple", "Speed Triple", "Bonneville T120", "Tiger 900", "Trident 660", "Rocket 3"],
-  "Aprilia": ["RS 660", "RSV4", "Tuono 660", "Tuono V4", "Shiver 900"],
-  "CFMoto": ["250NK", "400NK", "650NK", "650MT", "700CL-X", "800MT", "450SR"],
-  "Voge": ["300R", "300AC", "500R", "500DS", "525DSX", "650DS"],
-  "Benelli": ["TNT 302", "Leoncino 500", "TRK 502", "752S", "Imperiale 400"],
-  "Royal Enfield": ["Classic 350", "Meteor 350", "Himalayan", "Continental GT 650", "Interceptor 650"],
-  "Bajaj": ["Pulsar 150", "Pulsar 200NS", "Pulsar RS200", "Dominar 400", "Avenger"],
-  "Irbis": ["TTR 250", "TTR 110", "GR 250", "Z1", "VR-1"],
-  "Racer": ["Tiger", "Panther", "Ranger", "Skyway", "Nitro"],
-  "Stels": ["Flex 250", "600 Benelli", "Trigger 250", "ATV (квадроцикл)"],
-  "Минск (M1NSK)": ["C4 250", "D4 125", "X 250", "TRX 300"]
+/* ===== Каталог марок и моделей автомобилей ===== */
+const CAR_DATA = {
+  "Lada (ВАЗ)": ["Granta", "Vesta", "Largus", "Niva Legend", "Niva Travel", "XRAY", "Priora", "Kalina", "2107", "2114"],
+  "Toyota": ["Camry", "Corolla", "RAV4", "Land Cruiser", "Land Cruiser Prado", "Highlander", "Avensis", "Yaris"],
+  "Kia": ["Rio", "Sportage", "Sorento", "Cerato", "Optima", "Ceed", "Soul", "Picanto"],
+  "Hyundai": ["Solaris", "Creta", "Tucson", "Santa Fe", "Elantra", "Sonata", "i30", "Accent"],
+  "Volkswagen": ["Polo", "Golf", "Passat", "Tiguan", "Touareg", "Jetta", "Caddy", "Transporter"],
+  "Renault": ["Logan", "Sandero", "Duster", "Kaptur", "Arkana", "Megane", "Fluence", "Symbol"],
+  "Nissan": ["Almera", "Qashqai", "X-Trail", "Juke", "Note", "Terrano", "Murano", "Teana"],
+  "Skoda": ["Octavia", "Rapid", "Fabia", "Kodiaq", "Karoq", "Superb", "Yeti"],
+  "Ford": ["Focus", "Mondeo", "Kuga", "Fiesta", "EcoSport", "Explorer", "Transit"],
+  "Chevrolet": ["Aveo", "Cruze", "Lacetti", "Niva", "Captiva", "Cobalt", "Spark"],
+  "Mercedes-Benz": ["C-Class", "E-Class", "S-Class", "GLA", "GLC", "GLE", "Sprinter", "Vito"],
+  "BMW": ["1 серия", "3 серия", "5 серия", "7 серия", "X1", "X3", "X5", "X6"],
+  "Audi": ["A3", "A4", "A6", "A8", "Q3", "Q5", "Q7"],
+  "Mazda": ["3", "6", "CX-5", "CX-30", "CX-7", "CX-9"],
+  "Mitsubishi": ["Lancer", "Outlander", "ASX", "Pajero", "Pajero Sport", "L200"],
+  "Honda": ["Civic", "Accord", "CR-V", "Pilot", "Fit", "HR-V"],
+  "Opel": ["Astra", "Corsa", "Insignia", "Zafira", "Mokka", "Vectra"],
+  "Geely": ["Coolray", "Atlas", "Atlas Pro", "Tugella", "Monjaro", "Emgrand"],
+  "Chery": ["Tiggo 4", "Tiggo 7 Pro", "Tiggo 8 Pro", "Arrizo 8", "Tiggo 4 Pro"],
+  "Haval": ["Jolion", "F7", "F7x", "Dargo", "H9", "M6"],
+  "UAZ (УАЗ)": ["Patriot", "Hunter", "Pickup", "Profi", "Буханка (2206)"],
+  "GAZ (ГАЗ)": ["Газель Next", "Газель Бизнес", "Соболь", "Волга"]
 };
 
 /* ===== DOM ===== */
@@ -50,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#year").textContent = new Date().getFullYear();
   initMenu();
   initReveal();
-  initBikeSelectors();
+  initCarSelectors();
   initPhoneMask();
   initForm();
 });
@@ -93,7 +96,7 @@ function initReveal() {
 }
 
 /* ===== Выпадающие списки марки и модели ===== */
-function initBikeSelectors() {
+function initCarSelectors() {
   const brand = $("#brand");
   const brandOther = $("#brandOther");
   const model = $("#model");
@@ -101,7 +104,7 @@ function initBikeSelectors() {
 
   // Заполняем марки (перед опцией "Другая")
   const otherOption = brand.querySelector('option[value="__other__"]');
-  Object.keys(BIKE_DATA).forEach((name) => {
+  Object.keys(CAR_DATA).forEach((name) => {
     const opt = document.createElement("option");
     opt.value = name;
     opt.textContent = name;
@@ -124,10 +127,10 @@ function initBikeSelectors() {
     modelOther.classList.remove("show");
     modelOther.value = "";
 
-    if (val && val !== "__other__" && BIKE_DATA[val]) {
+    if (val && val !== "__other__" && CAR_DATA[val]) {
       model.disabled = false;
       model.appendChild(makeOption("", "Выберите модель"));
-      BIKE_DATA[val].forEach((m) => model.appendChild(makeOption(m, m)));
+      CAR_DATA[val].forEach((m) => model.appendChild(makeOption(m, m)));
       model.appendChild(makeOption("__other__", "Другая (ввести вручную)"));
     } else if (val === "__other__") {
       // Марка вручную → модель тоже вручную
@@ -242,7 +245,7 @@ function collectData() {
 
 function buildMessage(d) {
   return (
-    "🏍️ <b>Новая заявка — Вадос Сервис</b>\n\n" +
+    "🚗 <b>Новая заявка — Вадос Сервис</b>\n\n" +
     `👤 Имя: <b>${esc(d.name)}</b>\n` +
     `📞 Телефон: <b>${esc(d.phone)}</b>\n` +
     `✉️ Email: ${esc(d.email || "—")}\n` +
